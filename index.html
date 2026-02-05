@@ -2,649 +2,190 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Deutsch ↔ English Study Game (Lektion 8 + 9)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>German Words Game – Lektion 10</title>
 <style>
-  :root {
-    --bg: #f4f6f8; --card: #ffffff; --text: #111827; --muted: #6b7280;
-    --border: #e5e7eb; --shadow: rgba(0,0,0,0.08);
-    --good: #16a34a; --bad: #dc2626; --warn: #f59e0b;
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text);}
-  .wrap { max-width: 980px; margin: 0 auto; padding: 16px; }
-  header { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:12px; }
-  h1 { font-size: 18px; margin:0; }
-  .pill { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--muted); font-size:12px; }
-  .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
-  @media (min-width: 900px) { .grid { grid-template-columns: 1.25fr 0.75fr; } }
-  .card { background:var(--card); border:1px solid var(--border); border-radius:14px; box-shadow:0 6px 18px var(--shadow); padding:16px; }
-  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-  .row.space { justify-content: space-between; }
-  .tabs { display:flex; gap:8px; flex-wrap:wrap; }
-  button, select, input, textarea { font: inherit; }
-  .btn { border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; transition:transform .03s ease, border-color .15s ease; }
-  .btn:hover { border-color:#cbd5e1; }
-  .btn:active { transform: translateY(1px); }
-  .btn.active { outline:2px solid #111827; outline-offset:1px; }
-  .btn.good { border-color: rgba(22,163,74,0.4); }
-  .btn.bad { border-color: rgba(220,38,38,0.4); }
-  .btn.warn { border-color: rgba(245,158,11,0.5); }
-  .mini { padding:8px 10px; border-radius:10px; font-size:13px; }
-  .bigword { font-size:28px; line-height:1.15; margin:10px 0 6px; word-break: break-word; }
-  .sub { color:var(--muted); font-size:13px; }
-  .answerbox { margin-top:12px; padding:12px; border:1px dashed var(--border); border-radius:12px; background:#fafafa; min-height:50px; display:flex; align-items:center; justify-content:center; text-align:center; }
-  .answerbox.revealed { border-style:solid; background:#fff; }
-  .kbd { font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-         font-size:12px; border:1px solid var(--border); background:#fff; padding:2px 6px; border-radius:8px; color:var(--muted); }
-  .mcq { display:grid; gap:8px; margin-top:12px; }
-  .mcq button { text-align:left; width:100%; }
-  .input { width:100%; padding:12px 12px; border-radius:12px; border:1px solid var(--border); margin-top:10px; outline:none; }
-  .input:focus { border-color:#cbd5e1; }
-  .bar { height:10px; width:100%; background:#e5e7eb; border-radius:999px; overflow:hidden; margin-top:10px; }
-  .bar > div { height:100%; width:0%; background:#111827; }
-  .list { margin:0; padding-left:18px; color:var(--muted); }
-  .small { font-size:12px; color:var(--muted); }
-  .hr { height:1px; background:var(--border); margin:12px 0; }
-  .badge { display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border-radius:999px; border:1px solid var(--border); background:#fff; font-size:12px; color:var(--muted); }
-  .badge strong { color:var(--text); }
-  .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:16px; background:#111827; color:white; padding:10px 12px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity .2s ease; max-width:calc(100% - 24px); text-align:center; }
-  .toast.show { opacity:1; }
-  .danger { color: var(--bad); }
-  .goodtxt { color: var(--good); }
+  body { font-family: system-ui, -apple-system, Arial, sans-serif; background:#0f172a; color:#e5e7eb; margin:0; }
+  header { padding:16px; text-align:center; background:#020617; }
+  h1 { margin:0; font-size:1.2rem; }
+  .container { max-width:900px; margin:0 auto; padding:16px; }
+  .card { background:#020617; border:1px solid #1f2937; border-radius:12px; padding:16px; margin-bottom:16px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; }
+  button { background:#2563eb; color:white; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; }
+  button.secondary { background:#334155; }
+  button.ghost { background:transparent; border:1px dashed #334155; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  .word { font-size:1.6rem; margin:12px 0; }
+  .muted { color:#94a3b8; }
+  input { width:100%; padding:10px; border-radius:10px; border:1px solid #334155; background:#020617; color:#e5e7eb; }
+  .list { columns:2; column-gap:16px; }
+  @media (max-width:600px){ .list{columns:1;} }
+  .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#020617; border:1px solid #334155; margin:4px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Deutsch ↔ English Study Game (Lektion 8 + 9)</h1>
-      <div class="sub">Flashcards • Multiple choice • Typing • Exam mode • Score + streak • Spaced repetition (Anki-style) • Offline</div>
-    </div>
+<header>
+  <h1>German Words Game — Lektion 10</h1>
+  <div class="muted">Flashcards • Typing • Quick Quiz</div>
+</header>
+
+<div class="container">
+  <div class="card">
     <div class="row">
-      <span class="pill" id="countPill"></span>
-      <span class="pill" id="duePill"></span>
+      <button onclick="mode='flash';render()">Flashcards</button>
+      <button onclick="mode='type';render()">Typing</button>
+      <button onclick="mode='quiz';render()">Quiz</button>
+      <button class="secondary" onclick="shuffle()">Shuffle</button>
     </div>
-  </header>
+  </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="row space">
-        <div class="tabs">
-          <button class="btn mini active" id="tabFlash" onclick="setMode('flash')">Flashcards</button>
-          <button class="btn mini" id="tabMCQ" onclick="setMode('mcq')">Multiple choice</button>
-          <button class="btn mini" id="tabType" onclick="setMode('type')">Typing</button>
-          <button class="btn mini" id="tabExam" onclick="setMode('exam')">Exam</button>
-        </div>
-        <div class="row">
-          <button class="btn mini" id="dirBtn" onclick="toggleDirection()">DE → EN</button>
-          <button class="btn mini" onclick="nextCard(true)">Next</button>
-        </div>
-      </div>
+  <div id="app" class="card"></div>
 
-      <div class="hr"></div>
-
-      <div class="row space">
-        <div class="badge">Score: <strong id="score">0</strong></div>
-        <div class="badge">Streak: <strong id="streak">0</strong></div>
-        <div class="badge">Best streak: <strong id="bestStreak">0</strong></div>
-      </div>
-
-      <div class="bar"><div id="progressBar"></div></div>
-      <div class="small" id="progressText"></div>
-
-      <div class="bigword" id="prompt">—</div>
-      <div class="sub" id="hintLine">Tip: press <span class="kbd">Space</span> to reveal (flashcards) / <span class="kbd">Enter</span> to submit.</div>
-
-      <div id="flashArea">
-        <div class="answerbox" id="flashAnswer">Tap “Show answer”</div>
-        <div class="row" style="margin-top:12px;">
-          <button class="btn" onclick="revealFlash()">Show answer</button>
-          <button class="btn good" onclick="gradeFlash(true)">I knew it ✅</button>
-          <button class="btn bad" onclick="gradeFlash(false)">I didn’t ❌</button>
-        </div>
-      </div>
-
-      <div id="mcqArea" style="display:none;">
-        <div class="mcq" id="mcqList"></div>
-        <div class="small" id="mcqFeedback"></div>
-      </div>
-
-      <div id="typeArea" style="display:none;">
-        <input class="input" id="typeInput" placeholder="Type the answer here…" autocomplete="off" />
-        <div class="row" style="margin-top:10px;">
-          <button class="btn" onclick="submitTyping()">Submit</button>
-          <button class="btn" onclick="giveUpTyping()">Give up</button>
-          <button class="btn" onclick="revealTyping()">Show answer</button>
-        </div>
-        <div class="answerbox" id="typeAnswer"></div>
-        <div class="small" id="typeFeedback"></div>
-      </div>
-
-      <div id="examArea" style="display:none;">
-        <div class="row space">
-          <div class="badge">Questions: <strong id="examTotal">20</strong></div>
-          <div class="badge">Done: <strong id="examDone">0</strong></div>
-          <div class="badge">Correct: <strong id="examCorrect">0</strong></div>
-        </div>
-        <div class="small">Exam mixes MCQ + typing, prioritizing “Due” cards (spaced repetition).</div>
-        <div class="hr"></div>
-        <div id="examInner"></div>
-        <div class="row" style="margin-top:10px;">
-          <button class="btn" onclick="startExam()">Restart exam</button>
-          <button class="btn warn" onclick="finishExam()">Finish now</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="row space">
-        <div class="badge">Daily goal: <strong id="dailyGoal">30</strong></div>
-        <button class="btn mini" onclick="setGoal()">Change</button>
-      </div>
-      <div class="small" id="dailyText"></div>
-
-      <div class="hr"></div>
-
-      <div class="row space">
-        <div class="badge">Offline progress: <strong>On</strong></div>
-        <button class="btn mini warn" onclick="resetProgress()">Reset</button>
-      </div>
-      <div class="small">Progress is saved on this device (localStorage). Works offline.</div>
-
-      <div class="hr"></div>
-
-      <div class="row space">
-        <div class="badge">Share</div>
-        <button class="btn mini" onclick="copyShareLink()">Copy link</button>
-      </div>
-      <div class="small">Creates a link with your progress encoded in the URL hash.</div>
-
-      <div class="hr"></div>
-
-      <div class="row space">
-        <div class="badge">Export / Import</div>
-        <button class="btn mini" onclick="exportProgress()">Export</button>
-        <button class="btn mini" onclick="importProgress()">Import</button>
-      </div>
-      <textarea id="transferBox" class="input" rows="6" placeholder="Export code will appear here…"></textarea>
-      <div class="small">Paste export code to move progress to another phone/PC.</div>
-
-      <div class="hr"></div>
-
-      <div class="small">
-        <strong>Online version:</strong> upload this single HTML file to GitHub Pages / Netlify (free) to get a shareable website.
-      </div>
-
-      <div class="hr"></div>
-
-      <div class="small">
-        <strong>Keyboard</strong>
-        <ul class="list">
-          <li><span class="kbd">Space</span> = reveal (flashcards)</li>
-          <li><span class="kbd">Enter</span> = submit typing</li>
-          <li><span class="kbd">N</span> = next</li>
-        </ul>
-      </div>
-    </div>
+  <div class="card">
+    <h3>All words (Lektion 10)</h3>
+    <div class="list" id="list"></div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
-
 <script>
-const WORDS = [{"de": "das Schwimmbad, -¨er", "en": "swimming pool"}, {"de": "das Kino, -s", "en": "cinema"}, {"de": "heute Nachmittag um vier?", "en": "this afternoon at four?"}, {"de": "der Nachmittag, -e", "en": "afternoon"}, {"de": "um", "en": "at (used with time)"}, {"de": "am Montag oder am Dienstag?", "en": "on Monday or on Tuesday?"}, {"de": "der Wochentag, -e", "en": "weekday"}, {"de": "die Wochentage", "en": "weekdays"}, {"de": "die Woche, -n", "en": "week"}, {"de": "der Montag, -e", "en": "Monday"}, {"de": "der Dienstag, -e", "en": "Tuesday"}, {"de": "der Mittwoch, -e", "en": "Wednesday"}, {"de": "der Donnerstag, -e", "en": "Thursday"}, {"de": "der Freitag, -e", "en": "Friday"}, {"de": "der Samstag, -e", "en": "Saturday"}, {"de": "der Sonntag, -e", "en": "Sunday"}, {"de": "Wann?", "en": "when?"}, {"de": "gehen wir ins Kino?", "en": "shall we go to the cinema?"}, {"de": "Am Freitag.", "en": "on Friday."}, {"de": "das Wochenende, -n", "en": "weekend"}, {"de": "am Wochenende", "en": "on the weekend"}, {"de": "Am Samstag und am Sonntag = Wochenende", "en": "Saturday and Sunday = weekend"}, {"de": "frei", "en": "free / off"}, {"de": "Eine Woche frei.", "en": "one week off"}, {"de": "Was machen Sie?", "en": "what are you doing? (formal)"}, {"de": "der Chat, -s", "en": "chat / messaging"}, {"de": "die Nacht, -¨e", "en": "night"}, {"de": "in der Nacht", "en": "at night"}, {"de": "am Vormittag, am Nachmittag, am Abend", "en": "in the late morning, in the afternoon, in the evening"}, {"de": "Das weiß ich noch nicht.", "en": "I don’t know yet."}, {"de": "Was machst du heute Nachmittag?", "en": "what are you doing this afternoon?"}, {"de": "wissen (ich weiß, du weißt, er/sie/es weiß)", "en": "to know"}, {"de": "Ich weiß noch nicht.", "en": "I don’t know yet."}, {"de": "Lust auf …", "en": "feel like … / desire to …"}, {"de": "Keine Lust.", "en": "no desire / not in the mood."}, {"de": "die Lust (Sg.)", "en": "desire, wish"}, {"de": "die Idee, -n", "en": "idea"}, {"de": "Lektion 8", "en": "Lesson 8"}, {"de": "Gute Idee.", "en": "good idea."}, {"de": "um Viertel nach", "en": "quarter past"}, {"de": "um halb", "en": "half past"}, {"de": "spät", "en": "late"}, {"de": "oder", "en": "or"}, {"de": "okay", "en": "okay / alright"}, {"de": "Bis dann!", "en": "see you then!"}, {"de": "der Morgen, -", "en": "morning"}, {"de": "der Vormittag, -e", "en": "late morning"}, {"de": "der Mittag, -e", "en": "midday / noon"}, {"de": "der Nachmittag", "en": "afternoon"}, {"de": "der Abend", "en": "evening"}, {"de": "die Nacht", "en": "night"}, {"de": "Freizeit", "en": "free time"}, {"de": "das Museum, Museen", "en": "museum"}, {"de": "das Theater, -", "en": "theatre"}, {"de": "das Café, -s", "en": "café"}, {"de": "die Ausstellung, -en", "en": "exhibition"}, {"de": "der Klub / die Disco, -s", "en": "club / disco"}, {"de": "das Konzert, -e", "en": "concert"}, {"de": "das Restaurant, -s", "en": "restaurant"}, {"de": "die Bar, -s", "en": "bar"}, {"de": "das Fitnessstudio, -s", "en": "gym / fitness studio"}, {"de": "in", "en": "in / into"}, {"de": "Gehen wir in einen Klub?", "en": "shall we go to a club?"}, {"de": "Die Uhrzeit", "en": "time (clock time)"}, {"de": "Wie viel Uhr …?", "en": "what time is it?"}, {"de": "Es ist halb vier.", "en": "it’s half past three."}, {"de": "Wie spät …?", "en": "what time is it?"}, {"de": "Es ist … vier Uhr.", "en": "it’s … four o’clock."}, {"de": "der Rücken, -", "en": "back (body)"}, {"de": "Ja, genau.", "en": "yes, exactly."}, {"de": "Es ist Viertel vor drei?", "en": "is it quarter to three?"}, {"de": "Am Morgen", "en": "in the morning"}, {"de": "Heute", "en": "today"}, {"de": "arbeite ich", "en": "I work"}, {"de": "aber morgen", "en": "but tomorrow"}, {"de": "habe ich frei.", "en": "I am free / I have a day off."}, {"de": "vor …", "en": "to / before (time)"}, {"de": "Viertel", "en": "quarter"}, {"de": "nach …", "en": "past (time)"}, {"de": "halb …", "en": "half (time)"}, {"de": "der Vorschlag, -¨e", "en": "suggestion"}, {"de": "die Frage, -n", "en": "question"}, {"de": "die Antwort, -en", "en": "answer"}, {"de": "tut mir leid", "en": "I’m sorry"}, {"de": "ich kann leider nicht.", "en": "unfortunately, I can’t."}, {"de": "mögen (ich mag, du magst, er/sie/es mag)", "en": "to like"}, {"de": "Ich mag Hamburger.", "en": "I like hamburgers."}, {"de": "der Hamburger, -", "en": "hamburger"}, {"de": "die Schokolade (Sg.)", "en": "chocolate"}, {"de": "der Käse (Sg.)", "en": "cheese"}, {"de": "der Salat, -e", "en": "salad"}, {"de": "Lebensmittel", "en": "food products"}, {"de": "der Kuchen, -", "en": "cake"}, {"de": "die Suppe, -n", "en": "soup"}, {"de": "der Apfel, -¨", "en": "apple"}, {"de": "der Tee, -s", "en": "tea"}, {"de": "die Orange, -n", "en": "orange"}, {"de": "der Fisch, -e", "en": "fish"}, {"de": "die Tomate, -n", "en": "tomato"}, {"de": "das Brot, -e", "en": "bread"}, {"de": "der Kaffee, -s", "en": "coffee"}, {"de": "das Fleisch (Sg.)", "en": "meat"}, {"de": "das Brötchen, -", "en": "bread roll"}, {"de": "die Marmelade, -n", "en": "jam"}, {"de": "der Saft, -¨e", "en": "juice"}, {"de": "zum Frühstück", "en": "for breakfast"}, {"de": "das Frühstück (Sg.)", "en": "breakfast"}, {"de": "besonders", "en": "especially"}, {"de": "Guten Appetit!", "en": "enjoy your meal"}, {"de": "lecker", "en": "tasty"}, {"de": "essen (du isst, er/sie/es isst)", "en": "to eat"}, {"de": "der / das Ketchup (Sg.)", "en": "ketchup"}, {"de": "der Witz, -e", "en": "joke"}, {"de": "fit", "en": "fit / healthy"}, {"de": "intelligent", "en": "intelligent"}, {"de": "prima", "en": "great"}, {"de": "das Gedicht, -e", "en": "poem"}, {"de": "auf", "en": "on"}, {"de": "der Tisch, -e", "en": "table"}, {"de": "trinken", "en": "to drink"}, {"de": "das Abendessen, -", "en": "dinner"}, {"de": "das Mittagessen, -", "en": "lunch"}, {"de": "das Frühstück, -e", "en": "breakfast"}, {"de": "das Getränk, -e", "en": "drink"}, {"de": "das Essen, -", "en": "food"}, {"de": "die Butter (Sg.)", "en": "butter"}, {"de": "der Schinken, -", "en": "ham"}, {"de": "das Ei, -er", "en": "egg"}, {"de": "das Müsli, -s", "en": "muesli"}, {"de": "die Milch (Sg.)", "en": "milk"}, {"de": "wünschen", "en": "to wish / to order"}, {"de": "die Tasse, -n", "en": "cup"}, {"de": "möchten (du möchtest, er/sie/es möchte)", "en": "would like"}, {"de": "der Nusskuchen, -", "en": "nut cake"}, {"de": "der Apfelkuchen, -", "en": "apple cake"}, {"de": "der Schokoladenkuchen, -", "en": "chocolate cake"}, {"de": "schade", "en": "a pity"}, {"de": "na gut", "en": "alright"}, {"de": "nehmen (du nimmst, er/sie/es nimmt)", "en": "to take"}, {"de": "unser", "en": "our"}, {"de": "der Gast, -¨e", "en": "guest"}, {"de": "die Speisekarte, -n", "en": "menu"}, {"de": "der Apfelsaft, -¨e", "en": "apple juice"}, {"de": "der Orangensaft, -¨e", "en": "orange juice"}, {"de": "das Wasser (Sg.)", "en": "water"}, {"de": "die Speise, -n", "en": "dish"}, {"de": "die Vorspeise, -n", "en": "starter"}, {"de": "der Tomatensalat, -e", "en": "tomato salad"}, {"de": "die Kartoffel, -n", "en": "potato"}, {"de": "das Würstchen, -", "en": "small sausage"}, {"de": "das Hauptgericht, -e", "en": "main dish"}, {"de": "die Pommes frites (Pl.)", "en": "french fries"}, {"de": "die Nudel, -n", "en": "pasta"}, {"de": "die Soße, -n", "en": "sauce"}, {"de": "das Huhn, -¨er", "en": "chicken"}, {"de": "der Reis (Sg.)", "en": "rice"}, {"de": "das Dessert, -s", "en": "dessert"}, {"de": "das Eis (Sg.)", "en": "ice cream"}, {"de": "die Vanille (Sg.)", "en": "vanilla"}, {"de": "die Erdbeere, -n", "en": "strawberry"}, {"de": "die Kugel, -n", "en": "scoop"}, {"de": "die Portion, -en", "en": "portion"}, {"de": "die Sahne (Sg.)", "en": "cream"}, {"de": "das Obst (Sg.)", "en": "fruit"}, {"de": "das Stück, -e", "en": "piece"}, {"de": "die Zitrone, -n", "en": "lemon"}, {"de": "der Zitronenkuchen, -", "en": "lemon cake"}, {"de": "der Nachtisch (Sg.)", "en": "dessert"}, {"de": "perfekt", "en": "perfect"}, {"de": "das Menü, -s", "en": "menu (set menu)"}];
-const APP_KEY = "de_en_study_game_v1";
+const words = [
+  ["der Flughafen, -¨e","aeroport"],
+  ["chatten","chat qilmoq"],
+  ["der Kollege, -n","hamkasb (erkak)"],
+  ["die Kollegin, -nen","hamkasb (ayol)"],
+  ["der Flug, -¨e","parvoz"],
+  ["der Abendflug, -¨e","kechki reys"],
+  ["die Reise, -n","sayohat"],
+  ["kurz","qisqa"],
+  ["abfliegen","uchib ketmoq"],
+  ["starten","start olmoq, uchmoq"],
+  ["ankommen","yetib kelmoq"],
+  ["dort","u yerda"],
+  ["so","shunday, taxminan"],
+  ["anrufen","qo‘ng‘iroq qilmoq"],
+  ["noch mal","yana bir marta"],
+  ["früh","erta"],
+  ["sicher","ishonchli, albatta"],
+  ["die Stimme, -n","ovoz"],
+  ["versuchen","urinmoq, harakat qilmoq"],
+  ["hoffentlich","umid qilamanki"],
+  ["die Verspätung, -en","kechikish"],
+  ["kaputt","buzilgan"],
+  ["die Maschine, -n","samolyot, mashina"],
+  ["landen","qo‘nmoq (samolyot)"],
+  ["alles","hammasi"],
+  ["klar","tushunarli"],
+  ["lieber","yaxshiroq, afzal"],
+  ["wenig","oz"],
+  ["der Akku, -s","batareya, quvvat"],
+  ["verstehen","tushunmoq"],
+  ["abholen","olib ketmoq"],
+  ["natürlich","albatta"],
+  ["freuen (sich)","xursand bo‘lmoq"],
+  ["Bis gleich!","hozir ko‘rishamiz"],
+  ["einsteigen","transportga chiqmoq"],
+  ["umsteigen","transport almashtirmoq"],
+  ["aussteigen","transportdan tushmoq"],
+  ["der Verkehr (Sg.)","yo‘l harakati"],
+  ["das Verkehrsmittel, -","transport vositasi"],
+  ["das Gepäck (Sg.)","yuk"],
+  ["der Bahnhof, -¨e","vokzal"],
+  ["die U-Bahn, -en","metro (yerosti)"],
+  ["das Taxi, -s","taksi"],
+  ["der Bus, -se","avtobus"],
+  ["der Zug, -¨e","poyezd"],
+  ["die Straßenbahn, -en","tramvay"],
+  ["die S-Bahn, -en","shahar elektr poyezdi"],
+  ["das Flugzeug, -e","samolyot"],
+  ["der Koffer, -","chamadon"],
+  ["der Rucksack, -¨e","ryukzak"],
+  ["einkaufen","xarid qilmoq"],
+  ["abfahren","jo‘nab ketmoq"],
+  ["fernsehen","televizor tomosha qilmoq"],
+  ["die Durchsage, -n","e’lon (stansiyada)"],
+  ["der Intercity, -s","shaharlararo poyezd"],
+  ["der Bahnsteig, -e","platforma"],
+  ["die Richtung, -en","yo‘nalish"],
+  ["einfahren","kirib kelmoq (poyezd)"],
+  ["das Gleis, -e","rels, yo‘l (poyezd uchun)"],
+  ["die Fahrt, -en","safar"],
+  ["enden","tugamoq"],
+  ["beginnen","boshlanmoq"],
+  ["stehen","turmoq"],
+  ["der Ausgang, -¨e","chiqish"],
+  ["nächst-","keyingi"],
+  ["der Halt, -e","to‘xtash joyi"],
+  ["der Hauptbahnhof, -¨e","markaziy vokzal"],
+  ["die Vorsicht (Sg.)","ehtiyotlik"],
+  ["Achtung!","diqqat!"]
+];
 
-let state = {
-  direction: "de-en",
-  mode: "flash",
-  score: 0,
-  streak: 0,
-  bestStreak: 0,
-  dailyGoal: 30,
-  dailyDone: 0,
-  dailyDate: "",
-  srs: {}, 
-  seen: 0,
-  correct: 0,
-  wrong: 0,
-  lastCardId: null,
-  exam: {
-    active: false, total: 20, done: 0, correct: 0, queue: [], current: null, submode: "mcq"
+let i=0, mode='flash';
+
+function shuffle(){
+  for(let j=words.length-1;j>0;j--){
+    const k=Math.floor(Math.random()*(j+1));
+    [words[j],words[k]]=[words[k],words[j]];
   }
-};
-
-let current = null;
-
-function nowDay() {
-  const d = new Date(); d.setHours(0,0,0,0); return d.getTime();
-}
-function toast(msg) {
-  const el = document.getElementById("toast");
-  el.textContent = msg;
-  el.classList.add("show");
-  setTimeout(()=>el.classList.remove("show"), 1200);
-}
-function clamp(v,a,b) { return Math.max(a, Math.min(b,v)); }
-function normalize(s) {
-  return (s||"").toLowerCase().replace(/\s+/g," ").trim()
-    .replace(/[“”„]/g,'"').replace(/[’]/g,"'");
-}
-function getFrontBack(card) {
-  return (state.direction==="de-en")
-    ? {front: card.de, back: card.en}
-    : {front: card.en, back: card.de};
-}
-function getSrs(id) {
-  if (!state.srs[id]) state.srs[id] = { ease: 2.5, intervalDays: 0, due: nowDay(), reps: 0 };
-  return state.srs[id];
-}
-function isDue(id) { return getSrs(id).due <= nowDay(); }
-
-function pickCard(preferDue=true) {
-  const due=[], notDue=[];
-  for (let i=0;i<WORDS.length;i++) {
-    if (i===state.lastCardId) continue;
-    (isDue(i)?due:notDue).push(i);
-  }
-  let pool = (preferDue && due.length) ? due : (notDue.length?notDue:due);
-  if (!pool.length) pool = WORDS.map((_,i)=>i);
-  const id = pool[Math.floor(Math.random()*pool.length)];
-  state.lastCardId = id;
-  return { id, ...WORDS[id] };
+  i=0; render();
 }
 
-function save() {
-  try { localStorage.setItem(APP_KEY, JSON.stringify(state)); } catch(e) {}
-}
-function load() {
-  const hash = location.hash || "";
-  if (hash.startsWith("#share=")) {
-    try {
-      const payload = JSON.parse(atob(hash.slice(7)));
-      if (payload && payload.srs) {
-        state = { ...state, ...payload };
-        toast("Loaded from shared link");
-        history.replaceState(null, "", location.pathname + location.search);
-        return;
-      }
-    } catch(e) {}
-  }
-  const raw = localStorage.getItem(APP_KEY);
-  if (raw) {
-    try { state = { ...state, ...JSON.parse(raw) }; } catch(e) {}
-  }
-  const today = new Date().toISOString().slice(0,10);
-  if (state.dailyDate !== today) { state.dailyDate = today; state.dailyDone = 0; }
-}
-
-function updateHeader() {
-  document.getElementById("countPill").textContent = `${WORDS.length} cards`;
-  const dueCount = WORDS.reduce((acc,_,i)=>acc + (isDue(i)?1:0), 0);
-  document.getElementById("duePill").textContent = `${dueCount} due`;
-  document.getElementById("score").textContent = state.score;
-  document.getElementById("streak").textContent = state.streak;
-  document.getElementById("bestStreak").textContent = state.bestStreak;
-
-  const acc = Math.round((state.correct / Math.max(1, state.seen)) * 100);
-  document.getElementById("progressText").textContent = `Accuracy: ${acc}% • Seen: ${state.seen} • Correct: ${state.correct} • Wrong: ${state.wrong}`;
-  document.getElementById("progressBar").style.width = `${clamp(acc,0,100)}%`;
-
-  document.getElementById("dailyGoal").textContent = state.dailyGoal;
-  document.getElementById("dailyText").textContent = `Today: ${state.dailyDone} / ${state.dailyGoal} answers`;
-}
-
-function setTabActive(mode) {
-  const map={flash:"tabFlash",mcq:"tabMCQ",type:"tabType",exam:"tabExam"};
-  for (const k in map) document.getElementById(map[k]).classList.toggle("active", k===mode);
-}
-function showAreas() {
-  document.getElementById("flashArea").style.display = (state.mode==="flash") ? "" : "none";
-  document.getElementById("mcqArea").style.display = (state.mode==="mcq") ? "" : "none";
-  document.getElementById("typeArea").style.display = (state.mode==="type") ? "" : "none";
-  document.getElementById("examArea").style.display = (state.mode==="exam") ? "" : "none";
-}
-
-function setMode(mode) {
-  state.mode = mode;
-  setTabActive(mode);
-  showAreas();
-  if (mode==="exam") startExam();
-  else nextCard(true);
-  save();
-}
-
-function toggleDirection() {
-  state.direction = (state.direction==="de-en") ? "en-de" : "de-en";
-  document.getElementById("dirBtn").textContent = (state.direction==="de-en") ? "DE → EN" : "EN → DE";
-  if (state.mode==="exam") startExam(); else nextCard(true);
-  save();
-}
-
-// Flashcards
-function revealFlash() {
-  const box=document.getElementById("flashAnswer");
-  box.classList.add("revealed");
-  box.textContent=getFrontBack(current).back;
-}
-function gradeFlash(knew) {
-  state.seen += 1; state.dailyDone += 1;
-  if (knew) markCorrect(current.id, 4); else markWrong(current.id);
-  nextCard(true);
-}
-
-// MCQ
-function buildMcq() {
-  const list=document.getElementById("mcqList");
-  const fb=document.getElementById("mcqFeedback");
-  list.innerHTML=""; fb.textContent="";
-  const correct=getFrontBack(current).back;
-  const opts=new Set([correct]);
-  while (opts.size<4) {
-    const r=WORDS[Math.floor(Math.random()*WORDS.length)];
-    opts.add((state.direction==="de-en") ? r.en : r.de);
-  }
-  const arr=Array.from(opts).sort(()=>Math.random()-0.5);
-  arr.forEach(opt=>{
-    const btn=document.createElement("button");
-    btn.className="btn";
-    btn.textContent=opt;
-    btn.onclick=()=>{
-      state.seen += 1; state.dailyDone += 1;
-      if (opt===correct) { btn.classList.add("good"); fb.innerHTML='<span class="goodtxt">Correct ✅</span>'; markCorrect(current.id,4); }
-      else { btn.classList.add("bad"); fb.innerHTML=`<span class="danger">Wrong ❌</span> Correct: <strong>${correct}</strong>`; markWrong(current.id); }
-      Array.from(list.querySelectorAll("button")).forEach(b=>b.disabled=true);
-      setTimeout(()=>nextCard(true), 650);
-    };
-    list.appendChild(btn);
-  });
-}
-
-// Typing
-function revealTyping() {
-  const box=document.getElementById("typeAnswer");
-  box.classList.add("revealed");
-  box.textContent=getFrontBack(current).back;
-}
-function giveUpTyping() {
-  state.seen += 1; state.dailyDone += 1;
-  revealTyping();
-  document.getElementById("typeFeedback").innerHTML='<span class="danger">Counted as wrong.</span>';
-  markWrong(current.id);
-  setTimeout(()=>nextCard(true), 900);
-}
-function submitTyping() {
-  const inp=document.getElementById("typeInput");
-  const user=normalize(inp.value);
-  const correct=normalize(getFrontBack(current).back);
-  const back=getFrontBack(current).back;
-  const box=document.getElementById("typeAnswer");
-  const fb=document.getElementById("typeFeedback");
-  state.seen += 1; state.dailyDone += 1;
-
-  let ok=false;
-  if (correct.length<=12) ok=(user===correct);
-  else ok=(user===correct) || (correct.includes(user) && user.length>=Math.min(8, correct.length));
-
-  box.classList.add("revealed");
-  box.textContent=back;
-
-  if (ok) { fb.innerHTML='<span class="goodtxt">Correct ✅</span>'; markCorrect(current.id,4); }
-  else { fb.innerHTML=`<span class="danger">Wrong ❌</span> Correct: <strong>${back}</strong>`; markWrong(current.id); }
-
-  inp.value="";
-  setTimeout(()=>nextCard(true), 700);
-}
-
-// SRS
-function markCorrect(id, quality=4) {
-  state.correct += 1;
-  state.score += 10;
-  state.streak += 1;
-  state.bestStreak = Math.max(state.bestStreak, state.streak);
-
-  const s=getSrs(id);
-  s.reps += 1;
-  const q=clamp(quality,0,5);
-  s.ease = Math.max(1.3, s.ease + (0.1 - (5-q)*(0.08 + (5-q)*0.02)));
-  if (s.reps===1) s.intervalDays=1;
-  else if (s.reps===2) s.intervalDays=3;
-  else s.intervalDays=Math.round(s.intervalDays * s.ease);
-  s.due = nowDay() + s.intervalDays*24*60*60*1000;
-
-  save(); updateHeader();
-}
-function markWrong(id) {
-  state.wrong += 1;
-  state.score = Math.max(0, state.score - 2);
-  state.streak = 0;
-
-  const s=getSrs(id);
-  s.reps=0; s.intervalDays=0; s.due=nowDay(); s.ease=Math.max(1.3, s.ease-0.2);
-
-  save(); updateHeader();
-}
-
-// Main flow
-function renderPrompt() {
-  document.getElementById("prompt").textContent = getFrontBack(current).front;
-  document.getElementById("flashAnswer").classList.remove("revealed");
-  document.getElementById("flashAnswer").textContent="Tap “Show answer”";
-  document.getElementById("mcqFeedback").textContent="";
-  document.getElementById("typeAnswer").classList.remove("revealed");
-  document.getElementById("typeAnswer").textContent="";
-  document.getElementById("typeFeedback").textContent="";
-  const ti=document.getElementById("typeInput");
-  if (ti) ti.value="";
-}
-function nextCard(preferDue=true) {
-  if (state.mode==="exam") return;
-  current = pickCard(preferDue);
-  renderPrompt();
-  if (state.mode==="mcq") buildMcq();
-  updateHeader();
-}
-
-// Daily goal
-function setGoal() {
-  const v=prompt("Daily goal (answers per day):", String(state.dailyGoal));
-  if (!v) return;
-  const n=parseInt(v,10);
-  if (!isFinite(n) || n<=0) return toast("Invalid number");
-  state.dailyGoal=n; save(); updateHeader();
-}
-
-// Share / Export / Import
-function exportProgress() {
-  const payload = {
-    direction: state.direction, score: state.score, streak: state.streak, bestStreak: state.bestStreak,
-    dailyGoal: state.dailyGoal, dailyDone: state.dailyDone, dailyDate: state.dailyDate,
-    srs: state.srs, seen: state.seen, correct: state.correct, wrong: state.wrong
-  };
-  const code = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-  document.getElementById("transferBox").value = code;
-  toast("Exported");
-}
-function importProgress() {
-  const code = (document.getElementById("transferBox").value||"").trim();
-  if (!code) return toast("Paste export code first");
-  try {
-    const obj = JSON.parse(decodeURIComponent(escape(atob(code))));
-    if (!obj || !obj.srs) throw new Error("bad");
-    state = { ...state, ...obj };
-    save(); updateHeader(); nextCard(true); toast("Imported");
-  } catch(e) { toast("Import failed"); }
-}
-function copyShareLink() {
-  const payload = {
-    direction: state.direction, score: state.score, streak: state.streak, bestStreak: state.bestStreak,
-    dailyGoal: state.dailyGoal, dailyDone: state.dailyDone, dailyDate: state.dailyDate,
-    srs: state.srs, seen: state.seen, correct: state.correct, wrong: state.wrong
-  };
-  const encoded = btoa(JSON.stringify(payload));
-  const url = location.origin + location.pathname + "#share=" + encoded;
-  navigator.clipboard.writeText(url).then(()=>toast("Link copied"), ()=>toast("Copy failed"));
-}
-
-// Reset
-function resetProgress() {
-  if (!confirm("Reset ALL progress? This cannot be undone.")) return;
-  state.srs={}; state.score=0; state.streak=0; state.bestStreak=0;
-  state.seen=0; state.correct=0; state.wrong=0; state.dailyDone=0;
-  save(); nextCard(true); updateHeader(); toast("Reset");
-}
-
-// Exam
-function startExam() {
-  state.exam.active=true;
-  state.exam.total=20;
-  state.exam.done=0;
-  state.exam.correct=0;
-
-  const ids=WORDS.map((_,i)=>i);
-  const due=ids.filter(i=>isDue(i)).sort(()=>Math.random()-0.5);
-  const notDue=ids.filter(i=>!isDue(i)).sort(()=>Math.random()-0.5);
-  let queue = due.slice(0,20);
-  while (queue.length<20 && notDue.length) queue.push(notDue.pop());
-  queue = Array.from(new Set(queue)).slice(0,20);
-  while (queue.length<20) queue.push(Math.floor(Math.random()*WORDS.length));
-  state.exam.queue=queue;
-
-  document.getElementById("examTotal").textContent=state.exam.total;
-  document.getElementById("examDone").textContent=state.exam.done;
-  document.getElementById("examCorrect").textContent=state.exam.correct;
-
-  nextExamQuestion(); save();
-}
-
-function nextExamQuestion() {
-  const inner=document.getElementById("examInner");
-  inner.innerHTML="";
-  if (state.exam.done >= state.exam.total) {
-    inner.innerHTML = `<div class="answerbox revealed">Exam finished ✅<br/>Score: <strong>${state.exam.correct}</strong> / <strong>${state.exam.total}</strong></div>`;
-    return;
-  }
-  const id = state.exam.queue[state.exam.done % state.exam.queue.length];
-  current = { id, ...WORDS[id] };
-  state.exam.submode = (state.exam.done % 2 === 0) ? "mcq" : "type";
-
-  const fb = getFrontBack(current);
-  const title=document.createElement("div");
-  title.className="bigword";
-  title.textContent=fb.front;
-  inner.appendChild(title);
-
-  const sub=document.createElement("div");
-  sub.className="sub";
-  sub.textContent = (state.exam.submode==="mcq") ? "Choose the correct answer:" : "Type the answer:";
-  inner.appendChild(sub);
-
-  if (state.exam.submode==="mcq") {
-    const list=document.createElement("div");
-    list.className="mcq";
-    const correct=fb.back;
-    const opts=new Set([correct]);
-    while (opts.size<4) {
-      const r=WORDS[Math.floor(Math.random()*WORDS.length)];
-      opts.add((state.direction==="de-en") ? r.en : r.de);
-    }
-    Array.from(opts).sort(()=>Math.random()-0.5).forEach(opt=>{
-      const btn=document.createElement("button");
-      btn.className="btn";
-      btn.textContent=opt;
-      btn.onclick=()=>examAnswer(opt===correct, correct);
-      list.appendChild(btn);
-    });
-    inner.appendChild(list);
+function render(){
+  const app=document.getElementById('app');
+  if(mode==='flash'){
+    const [de,uz]=words[i];
+    app.innerHTML = `
+      <div class="muted">Flashcard ${i+1}/${words.length}</div>
+      <div class="word">${de}</div>
+      <div class="muted">${uz}</div>
+      <div class="row">
+        <button onclick="i=(i-1+words.length)%words.length;render()">Prev</button>
+        <button onclick="i=(i+1)%words.length;render()">Next</button>
+      </div>`;
+  } else if(mode==='type'){
+    const [de,uz]=words[i];
+    app.innerHTML = `
+      <div class="muted">Type the Uzbek meaning</div>
+      <div class="word">${de}</div>
+      <input id="ans" placeholder="Type here..." />
+      <div class="row">
+        <button onclick="check('${uz.replace(/'/g,"\'")}')">Check</button>
+        <button class="secondary" onclick="i=(i+1)%words.length;render()">Skip</button>
+      </div>
+      <div id="fb" class="muted"></div>`;
   } else {
-    const inp=document.createElement("input");
-    inp.className="input";
-    inp.placeholder="Type your answer…";
-    inp.id="examTypeInput";
-    inner.appendChild(inp);
-
-    const row=document.createElement("div");
-    row.className="row";
-    row.style.marginTop="10px";
-
-    const submit=document.createElement("button");
-    submit.className="btn";
-    submit.textContent="Submit";
-    submit.onclick=()=>{
-      const user=normalize(inp.value);
-      const correct=normalize(fb.back);
-      let ok=false;
-      if (correct.length<=12) ok=(user===correct);
-      else ok=(user===correct) || (correct.includes(user) && user.length>=Math.min(8, correct.length));
-      examAnswer(ok, fb.back);
-    };
-    row.appendChild(submit);
-
-    const giveup=document.createElement("button");
-    giveup.className="btn";
-    giveup.textContent="Give up";
-    giveup.onclick=()=>examAnswer(false, fb.back);
-    row.appendChild(giveup);
-
-    inner.appendChild(row);
-    setTimeout(()=>inp.focus(), 50);
-  }
-
-  updateHeader();
-  document.getElementById("examDone").textContent=state.exam.done;
-  document.getElementById("examCorrect").textContent=state.exam.correct;
-}
-
-function examAnswer(ok, correctText) {
-  state.seen += 1; state.dailyDone += 1;
-  if (ok) { state.exam.correct += 1; markCorrect(current.id,4); toast("Correct ✅"); }
-  else { markWrong(current.id); toast("Wrong ❌"); }
-
-  state.exam.done += 1;
-  document.getElementById("examDone").textContent=state.exam.done;
-  document.getElementById("examCorrect").textContent=state.exam.correct;
-
-  const inner=document.getElementById("examInner");
-  const ans=document.createElement("div");
-  ans.className="answerbox revealed";
-  ans.innerHTML = ok ? "✅ <strong>Correct</strong>" : `❌ Correct: <strong>${correctText}</strong>`;
-  inner.appendChild(ans);
-
-  save();
-  setTimeout(()=>nextExamQuestion(), 650);
-}
-
-function finishExam() {
-  state.exam.done = state.exam.total;
-  nextExamQuestion();
-  save();
-}
-
-// Keyboard
-document.addEventListener("keydown",(e)=>{
-  if (e.key.toLowerCase()==="n" && state.mode!=="exam") nextCard(true);
-  if (e.key===" " && state.mode==="flash") { e.preventDefault(); revealFlash(); }
-  if (e.key==="Enter") {
-    if (state.mode==="type") submitTyping();
-    if (state.mode==="exam") {
-      const btn=document.querySelector("#examInner .btn");
-      const inp=document.getElementById("examTypeInput");
-      if (inp && btn) btn.click();
+    const [de,uz]=words[i];
+    const opts=[uz];
+    while(opts.length<4){
+      const r=words[Math.floor(Math.random()*words.length)][1];
+      if(!opts.includes(r)) opts.push(r);
     }
+    opts.sort(()=>Math.random()-0.5);
+    app.innerHTML = `
+      <div class="muted">Quiz</div>
+      <div class="word">${de}</div>
+      <div class="row">
+        ${opts.map(o=>`<button class="ghost" onclick="pick('${o.replace(/'/g,"\'")}','${uz.replace(/'/g,"\'")}')">${o}</button>`).join('')}
+      </div>
+      <div id="fb" class="muted"></div>`;
   }
-});
-
-// Init
-function init() {
-  load();
-  document.getElementById("dirBtn").textContent = (state.direction==="de-en") ? "DE → EN" : "EN → DE";
-  setTabActive(state.mode);
-  showAreas();
-  updateHeader();
-  if (state.mode==="exam") startExam(); else nextCard(true);
 }
-init();
+
+function check(correct){
+  const v=document.getElementById('ans').value.trim().toLowerCase();
+  document.getElementById('fb').textContent = v===correct.toLowerCase() ? '✅ Correct' : '❌ Correct: '+correct;
+}
+
+function pick(v,correct){
+  document.getElementById('fb').textContent = v===correct ? '✅ Correct' : '❌ Correct: '+correct;
+}
+
+function renderList(){
+  const l=document.getElementById('list');
+  l.innerHTML = words.map(w=>`<span class="pill">${w[0]} — ${w[1]}</span>`).join('');
+}
+
+render(); renderList();
 </script>
 </body>
 </html>
