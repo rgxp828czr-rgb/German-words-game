@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>German Words Game — Lektion 10 & 11 (EN)</title>
+<meta name="description" content="Offline flashcards, typing, and quiz for Blitz Lektion 10 & 11. German → English / English → German." />
+<style>
+  :root {
+    --bg:#0b1220; --panel:#0f1b33; --panel2:#0b162d; --text:#e7eefc; --muted:#9bb0d1;
+    --accent:#4f7cff; --accent2:#2dd4bf; --danger:#ff4d6d; --line:#203257;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--text); }
+  header { position:sticky; top:0; z-index:10; background:linear-gradient(180deg, #081024 0%, #0b1220 100%); border-bottom:1px solid var(--line); }
+  .wrap { max-width: 980px; margin:0 auto; padding:14px 14px; }
+  h1 { font-size:1.05rem; margin:0; }
+  .sub { color:var(--muted); font-size:.9rem; margin-top:4px; }
+  .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:14px; }
+  .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+  .row.space { justify-content:space-between; }
+  button, select, input { font:inherit; }
+  button {
+    border:1px solid transparent; border-radius:12px; padding:10px 12px; cursor:pointer;
+    background:var(--accent); color:white; font-weight:600;
+  }
+  button.secondary { background:transparent; border-color: var(--line); color: var(--text); }
+  button.ghost { background:transparent; border:1px dashed var(--line); color:var(--text); }
+  button.good { background:var(--accent2); color:#062a26; }
+  button.bad { background:var(--danger); }
+  button:disabled { opacity:.55; cursor:not-allowed; }
+  select, input {
+    background:var(--panel2); border:1px solid var(--line); color:var(--text);
+    padding:10px 12px; border-radius:12px; outline:none;
+  }
+  input::placeholder { color:#7f95bd; }
+  .big { font-size:1.7rem; font-weight:800; letter-spacing:.2px; }
+  .small { color:var(--muted); font-size:.92rem; }
+  .pill { display:inline-flex; gap:8px; align-items:center; padding:6px 10px; border-radius:999px;
+    border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--muted); font-size:.85rem; }
+  .tag { font-weight:700; color:var(--text); }
+  .two { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  @media (max-width:820px) { .two { grid-template-columns:1fr; } }
+  .hr { height:1px; background:var(--line); margin:12px 0; }
+  .choices { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+  @media (max-width:520px) { .choices { grid-template-columns:1fr; } }
+  .ok { color: #7CFFB2; font-weight:700; }
+  .no { color: #FF9FB2; font-weight:700; }
+  details { border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(0,0,0,.12); }
+  summary { cursor:pointer; color:var(--text); font-weight:700; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.9rem; }
+  .list { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+  @media (max-width:740px) { .list { grid-template-columns:1fr; } }
+  .item { padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.02); }
+  .item .de { font-weight:800; }
+  .item .en { color:var(--muted); margin-top:2px; }
+  .right { text-align:right; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="row space">
+      <div>
+        <h1>German Words Game — Lektion 10 & 11 (English)</h1>
+        <div class="sub">Flashcards • Typing • Quiz • Favorites • Progress saved on your device</div>
+      </div>
+      <div class="row">
+        <span class="pill"><span class="tag">Shortcuts</span> <span class="mono">← →</span> <span class="mono">Space</span> <span class="mono">1-4</span> <span class="mono">F</span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <div class="card">
+      <div class="row space">
+        <div class="row">
+          <label class="pill"><span class="tag">Lesson</span>
+            <select id="lessonSelect">
+              <option value="10">Lektion 10</option>
+              <option value="11">Lektion 11</option>
+              <option value="10,11">10 + 11</option>
+            </select>
+          </label>
+          <label class="pill"><span class="tag">Mode</span>
+            <select id="modeSelect">
+              <option value="flash">Flashcards</option>
+              <option value="type">Typing</option>
+              <option value="quiz">Quiz</option>
+              <option value="review">Review (SRS)</option>
+            </select>
+          </label>
+          <label class="pill"><span class="tag">Direction</span>
+            <select id="dirSelect">
+              <option value="de-en">German → English</option>
+              <option value="en-de">English → German</option>
+              <option value="mix">Mix</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="row">
+          <button class="secondary" id="shuffleBtn">Shuffle</button>
+          <button class="secondary" id="favOnlyBtn" title="Show only favorites">★ Favorites</button>
+          <button class="secondary" id="resetBtn" title="Reset progress on this device">Reset</button>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="row">
+        <input id="searchBox" placeholder="Search (German or English)..." />
+        <span class="pill"><span class="tag">Cards</span> <span id="countLabel">0</span></span>
+        <span class="pill"><span class="tag">Known</span> <span id="knownLabel">0</span></span>
+        <span class="pill"><span class="tag">Streak</span> <span id="streakLabel">0</span></span>
+        <span class="pill"><span class="tag">Accuracy</span> <span id="accLabel">0%</span></span>
+      </div>
+
+      <div class="small" style="margin-top:10px;">
+        Tip: When you open your GitHub Pages link in Safari, use <b>Share → Add to Home Screen</b> to make it like an app.
+      </div>
+    </div>
+
+    <div class="card" id="studyCard"></div>
+
+    <div class="two">
+      <details class="card" open>
+        <summary>All words (filtered)</summary>
+        <div class="small" style="margin-top:8px;">Tap ★ on a card to save it to Favorites.</div>
+        <div class="hr"></div>
+        <div class="list" id="wordList"></div>
+      </details>
+
+      <details class="card">
+        <summary>Backup / Import / Export</summary>
+        <div class="small" style="margin-top:8px;">Your progress is saved automatically on this device (localStorage).</div>
+        <div class="hr"></div>
+        <div class="row">
+          <button class="secondary" id="exportBtn">Export progress</button>
+          <button class="secondary" id="importBtn">Import progress</button>
+        </div>
+        <div style="margin-top:10px;">
+          <textarea id="backupBox" class="mono" style="width:100%; min-height:140px; padding:10px; border-radius:12px; border:1px solid var(--line); background:var(--panel2); color:var(--text);" placeholder="Export appears here. Paste here to import."></textarea>
+        </div>
+        <div class="small" style="margin-top:10px;">
+          Export is useful if you change phone/iPad or clear browser data.
+        </div>
+      </details>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const DATA = [{"lesson": "10", "de": "der Flughafen, -¨e", "en": "airport", "id": "10-001"}, {"lesson": "10", "de": "chatten (du chattest, er/sie/es chattet)", "en": "to chat", "id": "10-002"}, {"lesson": "10", "de": "der Kollege, -n", "en": "colleague (male)", "id": "10-003"}, {"lesson": "10", "de": "die Kollegin, -nen", "en": "colleague (female)", "id": "10-004"}, {"lesson": "10", "de": "der Flug, -¨e", "en": "flight", "id": "10-005"}, {"lesson": "10", "de": "der Abendflug, -¨e", "en": "evening flight", "id": "10-006"}, {"lesson": "10", "de": "die Reise, -n", "en": "trip, journey", "id": "10-007"}, {"lesson": "10", "de": "kurz", "en": "short", "id": "10-008"}, {"lesson": "10", "de": "abfliegen", "en": "to take off (plane)", "id": "10-009"}, {"lesson": "10", "de": "starten (du startest, er/sie/es startet)", "en": "to start; to take off", "id": "10-010"}, {"lesson": "10", "de": "ankommen", "en": "to arrive", "id": "10-011"}, {"lesson": "10", "de": "dort", "en": "there", "id": "10-012"}, {"lesson": "10", "de": "so", "en": "so; like that", "id": "10-013"}, {"lesson": "10", "de": "anrufen", "en": "to call (by phone)", "id": "10-014"}, {"lesson": "10", "de": "noch mal", "en": "once again", "id": "10-015"}, {"lesson": "10", "de": "früh", "en": "early", "id": "10-016"}, {"lesson": "10", "de": "sicher", "en": "sure; safe", "id": "10-017"}, {"lesson": "10", "de": "die Stimme, -n", "en": "voice", "id": "10-018"}, {"lesson": "10", "de": "versuchen", "en": "to try", "id": "10-019"}, {"lesson": "10", "de": "hoffentlich", "en": "hopefully", "id": "10-020"}, {"lesson": "10", "de": "die Verspätung, -en", "en": "delay", "id": "10-021"}, {"lesson": "10", "de": "kaputt", "en": "broken", "id": "10-022"}, {"lesson": "10", "de": "die Maschine, -n", "en": "machine; airplane", "id": "10-023"}, {"lesson": "10", "de": "landen", "en": "to land", "id": "10-024"}, {"lesson": "10", "de": "alles", "en": "everything", "id": "10-025"}, {"lesson": "10", "de": "klar", "en": "clear", "id": "10-026"}, {"lesson": "10", "de": "lieber", "en": "rather; preferably", "id": "10-027"}, {"lesson": "10", "de": "wenig", "en": "little", "id": "10-028"}, {"lesson": "10", "de": "der Akku, -s", "en": "battery", "id": "10-029"}, {"lesson": "10", "de": "verstehen", "en": "to understand", "id": "10-030"}, {"lesson": "10", "de": "abholen", "en": "to pick up", "id": "10-031"}, {"lesson": "10", "de": "natürlich", "en": "of course", "id": "10-032"}, {"lesson": "10", "de": "freuen (sich)", "en": "to be happy; to be pleased", "id": "10-033"}, {"lesson": "10", "de": "Bis gleich!", "en": "See you soon!", "id": "10-034"}, {"lesson": "10", "de": "einsteigen", "en": "to get on (transport)", "id": "10-035"}, {"lesson": "10", "de": "umsteigen", "en": "to change (transport)", "id": "10-036"}, {"lesson": "10", "de": "aussteigen", "en": "to get off (transport)", "id": "10-037"}, {"lesson": "10", "de": "der Verkehr (Sg.)", "en": "traffic", "id": "10-038"}, {"lesson": "10", "de": "das Verkehrsmittel, -", "en": "means of transport", "id": "10-039"}, {"lesson": "10", "de": "das Gepäck (Sg.)", "en": "luggage", "id": "10-040"}, {"lesson": "10", "de": "der Bahnhof, -¨e", "en": "train station", "id": "10-041"}, {"lesson": "10", "de": "die U-Bahn, -en", "en": "subway", "id": "10-042"}, {"lesson": "10", "de": "das Taxi, -s", "en": "taxi", "id": "10-043"}, {"lesson": "10", "de": "der Bus, -se", "en": "bus", "id": "10-044"}, {"lesson": "10", "de": "der Zug, -¨e", "en": "train", "id": "10-045"}, {"lesson": "10", "de": "die Straßenbahn, -en", "en": "tram", "id": "10-046"}, {"lesson": "10", "de": "die S-Bahn, -en", "en": "suburban train", "id": "10-047"}, {"lesson": "10", "de": "das Flugzeug, -e", "en": "airplane", "id": "10-048"}, {"lesson": "10", "de": "der Koffer, -", "en": "suitcase", "id": "10-049"}, {"lesson": "10", "de": "der Rucksack, -¨e", "en": "backpack", "id": "10-050"}, {"lesson": "10", "de": "einkaufen", "en": "to shop", "id": "10-051"}, {"lesson": "10", "de": "abfahren", "en": "to depart", "id": "10-052"}, {"lesson": "10", "de": "fernsehen (du siehst fern, er/sie/es sieht fern)", "en": "to watch TV", "id": "10-053"}, {"lesson": "10", "de": "die Durchsage, -n", "en": "announcement", "id": "10-054"}, {"lesson": "10", "de": "der Intercity, -s", "en": "intercity train", "id": "10-055"}, {"lesson": "10", "de": "der Bahnsteig, -e", "en": "platform", "id": "10-056"}, {"lesson": "10", "de": "die Richtung, -en", "en": "direction", "id": "10-057"}, {"lesson": "10", "de": "einfahren", "en": "to arrive (train)", "id": "10-058"}, {"lesson": "10", "de": "das Gleis, -e", "en": "track", "id": "10-059"}, {"lesson": "10", "de": "die Fahrt, -en", "en": "trip", "id": "10-060"}, {"lesson": "10", "de": "enden", "en": "to end", "id": "10-061"}, {"lesson": "10", "de": "beginnen", "en": "to begin", "id": "10-062"}, {"lesson": "10", "de": "stehen", "en": "to stand", "id": "10-063"}, {"lesson": "10", "de": "der Ausgang, -¨e", "en": "exit", "id": "10-064"}, {"lesson": "10", "de": "nächst-", "en": "next", "id": "10-065"}, {"lesson": "10", "de": "der Halt, -e", "en": "stop", "id": "10-066"}, {"lesson": "10", "de": "der Hauptbahnhof, -¨e", "en": "main train station", "id": "10-067"}, {"lesson": "10", "de": "die Vorsicht (Sg.)", "en": "caution", "id": "10-068"}, {"lesson": "10", "de": "Achtung!", "en": "Attention!", "id": "10-069"}, {"lesson": "11", "de": "gestern", "en": "yesterday", "id": "11-070"}, {"lesson": "11", "de": "der Spaziergang, -¨e", "en": "walk", "id": "11-071"}, {"lesson": "11", "de": "der Wald, -¨er", "en": "forest", "id": "11-072"}, {"lesson": "11", "de": "die Zeitung, -en", "en": "newspaper", "id": "11-073"}, {"lesson": "11", "de": "aufräumen", "en": "to tidy up", "id": "11-074"}, {"lesson": "11", "de": "zu wenig", "en": "too little", "id": "11-075"}, {"lesson": "11", "de": "zu viel", "en": "too much", "id": "11-076"}, {"lesson": "11", "de": "der Vogel, -¨", "en": "bird", "id": "11-077"}, {"lesson": "11", "de": "der Film, -e", "en": "movie", "id": "11-078"}, {"lesson": "11", "de": "die Pause, -n", "en": "break", "id": "11-079"}, {"lesson": "11", "de": "der Doktor, -en", "en": "doctor", "id": "11-080"}, {"lesson": "11", "de": "die Doktorarbeit, -en", "en": "doctoral thesis", "id": "11-081"}, {"lesson": "11", "de": "abwaschen", "en": "to wash dishes", "id": "11-082"}, {"lesson": "11", "de": "schlafen", "en": "to sleep", "id": "11-083"}, {"lesson": "11", "de": "die Hausaufgabe, -n", "en": "homework", "id": "11-084"}, {"lesson": "11", "de": "die Serie, -n", "en": "series", "id": "11-085"}, {"lesson": "11", "de": "von … bis", "en": "from … to", "id": "11-086"}, {"lesson": "11", "de": "der Basketball (Sg.)", "en": "basketball", "id": "11-087"}, {"lesson": "11", "de": "danach", "en": "after that", "id": "11-088"}, {"lesson": "11", "de": "kaufen", "en": "to buy", "id": "11-089"}, {"lesson": "11", "de": "das T-Shirt, -s", "en": "T-shirt", "id": "11-090"}, {"lesson": "11", "de": "ab", "en": "from", "id": "11-091"}, {"lesson": "11", "de": "ganze", "en": "whole", "id": "11-092"}, {"lesson": "11", "de": "zurückkommen", "en": "to return", "id": "11-093"}, {"lesson": "11", "de": "der Kuss, -¨e", "en": "kiss", "id": "11-094"}, {"lesson": "11", "de": "geöffnet", "en": "open", "id": "11-095"}, {"lesson": "11", "de": "das Schild, -er", "en": "sign", "id": "11-096"}, {"lesson": "11", "de": "der Kinderarzt, -¨e", "en": "pediatrician", "id": "11-097"}, {"lesson": "11", "de": "die Kinderärztin, -nen", "en": "pediatrician (female)", "id": "11-098"}, {"lesson": "11", "de": "die Boutique, -en", "en": "boutique", "id": "11-099"}, {"lesson": "11", "de": "die Mode, -n", "en": "fashion", "id": "11-100"}, {"lesson": "11", "de": "der Urlaub, -e", "en": "vacation", "id": "11-101"}, {"lesson": "11", "de": "der Unterricht (Sg.)", "en": "lesson; class", "id": "11-102"}, {"lesson": "11", "de": "der Kursleiter, -", "en": "course leader (male)", "id": "11-103"}, {"lesson": "11", "de": "die Kursleiterin, -nen", "en": "course leader (female)", "id": "11-104"}, {"lesson": "11", "de": "die Blume, -n", "en": "flower", "id": "11-105"}, {"lesson": "11", "de": "der Laden, -¨", "en": "shop", "id": "11-106"}, {"lesson": "11", "de": "geschlossen", "en": "closed", "id": "11-107"}, {"lesson": "11", "de": "das Eiscafé, -s", "en": "ice cream café", "id": "11-108"}, {"lesson": "11", "de": "die Praxis, Praxen", "en": "clinic", "id": "11-109"}, {"lesson": "11", "de": "der Kiosk, -e", "en": "kiosk", "id": "11-110"}, {"lesson": "11", "de": "der Zahn, -¨e", "en": "tooth", "id": "11-111"}, {"lesson": "11", "de": "letzt-", "en": "last", "id": "11-112"}, {"lesson": "11", "de": "der Sport (Sg.)", "en": "sport", "id": "11-113"}, {"lesson": "11", "de": "einladen", "en": "to invite", "id": "11-114"}, {"lesson": "11", "de": "der Chor, -¨e", "en": "choir", "id": "11-115"}, {"lesson": "11", "de": "der Handball (Sg.)", "en": "handball", "id": "11-116"}, {"lesson": "11", "de": "die Wäsche (Pl.)", "en": "laundry", "id": "11-117"}, {"lesson": "11", "de": "waschen", "en": "to wash", "id": "11-118"}, {"lesson": "11", "de": "das Geschenk, -e", "en": "gift", "id": "11-119"}];
+
+// --- State + storage ---
+const KEY = "de_en_words_game_v2_progress";
+const nowISO = () => new Date().toISOString();
+
+const defaultProgress = () => ({ 
+  seen: {},                 // id -> count
+  favorites: {},            // id -> true
+  srs: {},                  // id -> bucket 0-3 (0=again,1=hard,2=good,3=easy)
+  streak: 0,
+  total: 0,
+  correct: 0,
+  last: null
+});
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return defaultProgress();
+    const obj = JSON.parse(raw);
+    return Object.assign(defaultProgress(), obj);
+  } catch(e) {
+    return defaultProgress();
+  }
+}
+
+function saveProgress() {
+  localStorage.setItem(KEY, JSON.stringify(PROG));
+}
+
+let PROG = loadProgress();
+
+// --- UI elements ---
+const lessonSelect = document.getElementById("lessonSelect");
+const modeSelect   = document.getElementById("modeSelect");
+const dirSelect    = document.getElementById("dirSelect");
+const searchBox    = document.getElementById("searchBox");
+const shuffleBtn   = document.getElementById("shuffleBtn");
+const favOnlyBtn   = document.getElementById("favOnlyBtn");
+const resetBtn     = document.getElementById("resetBtn");
+
+const countLabel   = document.getElementById("countLabel");
+const knownLabel   = document.getElementById("knownLabel");
+const streakLabel  = document.getElementById("streakLabel");
+const accLabel     = document.getElementById("accLabel");
+
+const studyCard    = document.getElementById("studyCard");
+const wordList     = document.getElementById("wordList");
+
+const exportBtn    = document.getElementById("exportBtn");
+const importBtn    = document.getElementById("importBtn");
+const backupBox    = document.getElementById("backupBox");
+
+let favOnly = false;
+let pool = [];
+let idx = 0;
+
+// --- Helpers ---
+function shuffleArray(a) {
+  for(let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+}
+
+function normalize(s) {
+  return (s||"").toString().toLowerCase().trim();
+}
+
+function getDirectionForCard() {
+  const d = dirSelect.value;
+  if(d !== "mix") return d;
+  return Math.random() < 0.5 ? "de-en" : "en-de";
+}
+
+function cardFrontBack(card, dir) {
+  if(dir === "de-en") return { front: card.de, back: card.en };
+  return { front: card.en, back: card.de };
+}
+
+function markSeen(id) {
+  PROG.seen[id] = (PROG.seen[id]||0) + 1;
+  saveProgress();
+}
+
+function isKnown(id) {
+  return (PROG.srs[id]||0) >= 2; // good or easy
+}
+
+function setSRS(id, bucket) {
+  PROG.srs[id] = bucket;
+  saveProgress();
+}
+
+function toggleFav(id) {
+  if(PROG.favorites[id]) delete PROG.favorites[id];
+  else PROG.favorites[id] = true;
+  saveProgress();
+  rebuild();
+}
+
+function updateStatsUI() {
+  countLabel.textContent = pool.length;
+  const known = pool.filter(c => isKnown(c.id)).length;
+  knownLabel.textContent = known;
+  streakLabel.textContent = PROG.streak || 0;
+  const acc = PROG.total ? Math.round((PROG.correct/PROG.total)*100) : 0;
+  accLabel.textContent = acc + "%";
+}
+
+function answerResult(ok) {
+  PROG.total = (PROG.total||0) + 1;
+  if(ok) {
+    PROG.correct = (PROG.correct||0) + 1;
+    PROG.streak = (PROG.streak||0) + 1;
+  } else {
+    PROG.streak = 0;
+  }
+  PROG.last = nowISO();
+  saveProgress();
+  updateStatsUI();
+}
+
+// --- Build pool ---
+function buildPool() {
+  const lessons = lessonSelect.value.split(",");
+  const q = normalize(searchBox.value);
+  pool = DATA.filter(c => lessons.includes(c.lesson));
+
+  if(favOnly) {
+    pool = pool.filter(c => !!PROG.favorites[c.id]);
+  }
+
+  if(q) {
+    pool = pool.filter(c => normalize(c.de).includes(q) || normalize(c.en).includes(q));
+  }
+
+  // For review mode: sort by SRS bucket (again first)
+  if(modeSelect.value === "review") {
+    pool.sort((a,b) => (PROG.srs[a.id]||0) - (PROG.srs[b.id]||0));
+  }
+
+  if(idx >= pool.length) idx = 0;
+}
+
+function rebuild() {
+  buildPool();
+  renderList();
+  renderStudy();
+  updateStatsUI();
+}
+
+// --- Render list ---
+function renderList() {
+  wordList.innerHTML = "";
+  if(pool.length === 0) {
+    wordList.innerHTML = `<div class="small">No cards found. Try changing filters.</div>`;
+    return;
+  }
+  for(const c of pool) {
+    const fav = !!PROG.favorites[c.id];
+    const known = isKnown(c.id);
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="row space">
+        <div class="small"><span class="pill"><span class="tag">L${c.lesson}</span> <span class="mono">${c.id}</span></span>
+        ${known ? '<span class="pill"><span class="ok">Known</span></span>' : ''}</div>
+        <button class="secondary" onclick="toggleFav('${c.id}')">${fav ? '★' : '☆'}</button>
+      </div>
+      <div class="de">${c.de}</div>
+      <div class="en">${c.en}</div>
+    `;
+    wordList.appendChild(div);
+  }
+}
+
+// --- Study views ---
+function renderStudy() {
+  if(pool.length === 0) {
+    studyCard.innerHTML = `<div class="small">No cards to study. Change lesson/filter above.</div>`;
+    return;
+  }
+
+  const c = pool[idx];
+  const dir = getDirectionForCard();
+  const {front, back} = cardFrontBack(c, dir);
+  markSeen(c.id);
+
+  const fav = !!PROG.favorites[c.id];
+  const mode = modeSelect.value;
+
+  if(mode === "flash") {
+    studyCard.innerHTML = `
+      <div class="row space">
+        <div class="small">Flashcard <b>${idx+1}</b> / ${pool.length} · Lesson ${c.lesson}</div>
+        <div class="row">
+          <button class="secondary" onclick="toggleFav('${c.id}')">${fav ? '★ Favorite' : '☆ Favorite'}</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="big" id="front">${front}</div>
+      <div class="small" style="margin-top:6px;" id="hint">Tap “Show” (or press Space)</div>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="secondary" id="showBtn">Show</button>
+        <button class="secondary" id="prevBtn">Prev</button>
+        <button id="nextBtn">Next</button>
+      </div>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="bad" id="againBtn">Again</button>
+        <button class="secondary" id="hardBtn">Hard</button>
+        <button class="good" id="goodBtn">Good</button>
+        <button class="secondary" id="easyBtn">Easy</button>
+      </div>
+      <div class="small" id="back" style="display:none; margin-top:10px;"><b>Answer:</b> ${back}</div>
+    `;
+
+    const backEl = document.getElementById("back");
+    document.getElementById("showBtn").onclick = () => {
+      backEl.style.display = backEl.style.display === "none" ? "block" : "none";
+    };
+    document.getElementById("prevBtn").onclick = prev;
+    document.getElementById("nextBtn").onclick = next;
+    document.getElementById("againBtn").onclick = () => grade(0);
+    document.getElementById("hardBtn").onclick  = () => grade(1);
+    document.getElementById("goodBtn").onclick  = () => grade(2);
+    document.getElementById("easyBtn").onclick  = () => grade(3);
+
+  } else if(mode === "type") {
+    studyCard.innerHTML = `
+      <div class="row space">
+        <div class="small">Typing <b>${idx+1}</b> / ${pool.length} · Lesson ${c.lesson}</div>
+        <div class="row">
+          <button class="secondary" onclick="toggleFav('${c.id}')">${fav ? '★ Favorite' : '☆ Favorite'}</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="big">${front}</div>
+      <div class="small">Type the answer:</div>
+      <div class="row" style="margin-top:8px;">
+        <input id="ans" autocomplete="off" placeholder="Type here..." />
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <button id="checkBtn">Check</button>
+        <button class="secondary" id="revealBtn">Reveal</button>
+        <button class="secondary" id="skipBtn">Skip</button>
+      </div>
+      <div class="hr"></div>
+      <div class="small" id="fb"></div>
+      <div class="small" style="margin-top:6px;"><b>Correct:</b> ${back}</div>
+    `;
+
+    const ans = document.getElementById("ans");
+    ans.focus();
+
+    function check() {
+      const user = normalize(ans.value);
+      const correct = normalize(back);
+      // allow small punctuation differences
+      const ok = user && (user === correct || correct.includes(user) || user.includes(correct));
+      answerResult(ok);
+      document.getElementById("fb").innerHTML = ok ? '<span class="ok">✅ Correct</span>' : '<span class="no">❌ Not correct</span>';
+      setSRS(c.id, ok ? 2 : 0);
+    }
+
+    document.getElementById("checkBtn").onclick = check;
+    document.getElementById("revealBtn").onclick = () => {
+      answerResult(false);
+      document.getElementById("fb").innerHTML = '<span class="no">Shown</span>';
+      setSRS(c.id, 0);
+    };
+    document.getElementById("skipBtn").onclick = next;
+    ans.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") check();
+    });
+
+  } else if(mode === "quiz") {
+    // Build choices
+    const correct = back;
+    const choices = new Set([correct]);
+    while(choices.size < 4 && DATA.length > 3) {
+      const r = DATA[Math.floor(Math.random()*DATA.length)];
+      const rb = cardFrontBack(r, dir).back;
+      choices.add(rb);
+    }
+    const arr = Array.from(choices);
+    shuffleArray(arr);
+
+    studyCard.innerHTML = `
+      <div class="row space">
+        <div class="small">Quiz <b>${idx+1}</b> / ${pool.length} · Lesson ${c.lesson}</div>
+        <div class="row">
+          <button class="secondary" onclick="toggleFav('${c.id}')">${fav ? '★ Favorite' : '☆ Favorite'}</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="big">${front}</div>
+      <div class="small">Choose the correct answer:</div>
+      <div class="choices" style="margin-top:10px;">
+        ${arr.map((ch, n) => `<button class="ghost" data-n="${n+1}" onclick="pickQuiz('${escapeJS(ch)}','${escapeJS(correct)}','${c.id}')">${ch}</button>`).join("")}
+      </div>
+      <div class="hr"></div>
+      <div class="small" id="fb"></div>
+      <div class="row" style="margin-top:10px;">
+        <button class="secondary" onclick="prev()">Prev</button>
+        <button onclick="next()">Next</button>
+      </div>
+    `;
+
+  } else {
+    // Review mode: show by SRS bucket, with grading
+    const b = PROG.srs[c.id]||0;
+    const label = ["Again","Hard","Good","Easy"][b] || "Again";
+    studyCard.innerHTML = `
+      <div class="row space">
+        <div class="small">Review (SRS) · Bucket: <b>${label}</b> · ${idx+1}/${pool.length}</div>
+        <div class="row">
+          <button class="secondary" onclick="toggleFav('${c.id}')">${fav ? '★ Favorite' : '☆ Favorite'}</button>
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="big">${front}</div>
+      <div class="small" style="margin-top:6px;"><b>Answer:</b> ${back}</div>
+      <div class="hr"></div>
+      <div class="row">
+        <button class="bad" onclick="grade(0)">Again</button>
+        <button class="secondary" onclick="grade(1)">Hard</button>
+        <button class="good" onclick="grade(2)">Good</button>
+        <button class="secondary" onclick="grade(3)">Easy</button>
+        <button class="secondary" onclick="next()">Skip</button>
+      </div>
+      <div class="small" style="margin-top:10px;">SRS tip: Use <b>Again</b> if you forgot. Use <b>Easy</b> only if it is very easy.</div>
+    `;
+  }
+}
+
+function escapeJS(s) {
+  return (s||"").replaceAll("\\","\\\\").replaceAll("'","\\'");
+}
+
+// quiz pick handler (global)
+window.pickQuiz = function(choice, correct, id) {
+  const ok = choice === correct;
+  answerResult(ok);
+  document.getElementById("fb").innerHTML = ok ? '<span class="ok">✅ Correct</span>' : '<span class="no">❌ Correct: '+ correct +'</span>';
+  setSRS(id, ok ? 2 : 0);
+}
+
+// navigation
+function next() {
+  if(pool.length === 0) return;
+  idx = (idx + 1) % pool.length;
+  renderStudy();
+}
+function prev() {
+  if(pool.length === 0) return;
+  idx = (idx - 1 + pool.length) % pool.length;
+  renderStudy();
+}
+
+function grade(bucket) {
+  const c = pool[idx];
+  setSRS(c.id, bucket);
+  // treat Good/Easy as correct-ish for streak, Again as wrong-ish
+  answerResult(bucket >= 2);
+  next();
+}
+
+// --- events ---
+lessonSelect.addEventListener("change", () => { idx=0; rebuild(); });
+modeSelect.addEventListener("change", () => { idx=0; rebuild(); });
+dirSelect.addEventListener("change", () => { renderStudy(); });
+searchBox.addEventListener("input", () => { idx=0; rebuild(); });
+
+shuffleBtn.addEventListener("click", () => { shuffleArray(pool); idx=0; renderList(); renderStudy(); });
+
+favOnlyBtn.addEventListener("click", () => {
+  favOnly = !favOnly;
+  favOnlyBtn.textContent = favOnly ? "★ Favorites ON" : "★ Favorites";
+  idx=0; rebuild();
+});
+
+resetBtn.addEventListener("click", () => {
+  // Safe reset (keeps the app working)
+  PROG = defaultProgress();
+  saveProgress();
+  favOnly = false;
+  favOnlyBtn.textContent = "★ Favorites";
+  backupBox.value = "";
+  idx=0; rebuild();
+});
+
+exportBtn.addEventListener("click", () => {
+  backupBox.value = JSON.stringify(PROG, null, 2);
+});
+
+importBtn.addEventListener("click", () => {
+  try {
+    const obj = JSON.parse(backupBox.value.trim());
+    PROG = Object.assign(defaultProgress(), obj);
+    saveProgress();
+    rebuild();
+    alert("Imported!");
+  } catch(e) {
+    alert("Import failed. Paste valid JSON exported from this app.");
+  }
+});
+
+// Keyboard shortcuts
+document.addEventListener("keydown", (e) => {
+  if(e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+  if(e.key === "ArrowRight") next();
+  if(e.key === "ArrowLeft") prev();
+  if(e.key === " "){
+    e.preventDefault();
+    const show = document.getElementById("showBtn");
+    if(show) show.click();
+  }
+  // 1-4 for grading in flash/review
+  if(["1","2","3","4"].includes(e.key)) {
+    const map = {"1":"againBtn","2":"hardBtn","3":"goodBtn","4":"easyBtn"};
+    const btn = document.getElementById(map[e.key]);
+    if(btn) btn.click();
+  }
+  if(e.key.toLowerCase() === "f") {
+    const c = pool[idx];
+    if(c) toggleFav(c.id);
+  }
+});
+
+// init
+rebuild();
+</script>
+</body>
+</html>
